@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.indicador</groupId>
+
+    <artifactId>IndicadorReal</artifactId>
+
+    <version>2.0.0</version>
+
+
+    <properties>
+
+        <!-- Nome da aplicação -->
+        <app.name>${project.artifactId}</app.name>
+
+        <!-- Classe principal -->
+        <app.mainClass>com.indicador.IndicadorReal</app.mainClass>
+
+        <!-- Ícone do EXE -->
+        <app.icon>${project.basedir}/icones/com.indicador.IndicadorReal.ico</app.icon>
+
+        <!-- Pasta de saída -->
+        <app.dest>${project.basedir}/dist</app.dest>
+
+        <!-- Java -->
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- Codificação -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Versões -->
+        <flatlaf.version>3.6</flatlaf.version>
+
+        <jackson.version>2.20.0</jackson.version>
+
+    </properties>
+
+
+    <dependencies>
+
+
+        <!-- ====================================================== -->
+        <!-- INTERFACE GRÁFICA -->
+        <!-- ====================================================== -->
+
+        <dependency>
+
+            <groupId>com.formdev</groupId>
+
+            <artifactId>flatlaf</artifactId>
+
+            <version>${flatlaf.version}</version>
+
+        </dependency>
+
+
+        <!-- ====================================================== -->
+        <!-- JSON -->
+        <!-- ====================================================== -->
+
+        <dependency>
+
+            <groupId>com.fasterxml.jackson.core</groupId>
+
+            <artifactId>jackson-databind</artifactId>
+
+            <version>${jackson.version}</version>
+
+        </dependency>
+
+
+        <dependency>
+
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+
+            <artifactId>jackson-datatype-jsr310</artifactId>
+
+            <version>${jackson.version}</version>
+
+        </dependency>
+
+
+    </dependencies>
+
+
+    <build>
+
+        <plugins>
+
+
+            <!-- ================================================== -->
+            <!-- COMPILADOR JAVA -->
+            <!-- ================================================== -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <version>3.13.0</version>
+
+                <configuration>
+
+                    <release>${maven.compiler.release}</release>
+
+                </configuration>
+
+            </plugin>
+
+
+            <!-- ================================================== -->
+            <!-- JAR COM TODAS AS DEPENDÊNCIAS -->
+            <!-- ================================================== -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-assembly-plugin</artifactId>
+
+                <version>3.7.1</version>
+
+                <configuration>
+
+                    <archive>
+
+                        <manifest>
+
+                            <mainClass>${app.mainClass}</mainClass>
+
+                        </manifest>
+
+                    </archive>
+
+
+                    <descriptorRefs>
+
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+
+                    </descriptorRefs>
+
+                </configuration>
+
+
+                <executions>
+
+                    <execution>
+
+                        <id>make-assembly</id>
+
+                        <phase>package</phase>
+
+                        <goals>
+
+                            <goal>single</goal>
+
+                        </goals>
+
+                    </execution>
+
+                </executions>
+
+            </plugin>
+
+
+            <!-- ================================================== -->
+            <!-- GERA O INSTALADOR EXE DO WINDOWS -->
+            <!-- ================================================== -->
+
+            <plugin>
+
+                <groupId>org.codehaus.mojo</groupId>
+
+                <artifactId>exec-maven-plugin</artifactId>
+
+                <version>3.5.0</version>
+
+
+                <executions>
+
+                    <execution>
+
+                        <id>gerar-exe</id>
+
+                        <phase>package</phase>
+
+                        <goals>
+
+                            <goal>exec</goal>
+
+                        </goals>
+
+
+                        <configuration>
+
+                            <executable>jpackage</executable>
+
+                            <workingDirectory>${project.basedir}</workingDirectory>
+
+
+                            <arguments>
+
+
+                                <!-- Tipo: instalador EXE -->
+                                <argument>--type</argument>
+                                <argument>exe</argument>
+
+
+                                <!-- Nome da aplicação -->
+                                <argument>--name</argument>
+                                <argument>${app.name}</argument>
+
+
+                                <!-- JAR -->
+                                <argument>--input</argument>
+                                <argument>target</argument>
+
+
+                                <!-- JAR com todas as dependências -->
+                                <argument>--main-jar</argument>
+                                <argument>${project.artifactId}-${project.version}-jar-with-dependencies.jar</argument>
+
+
+                                <!-- Classe principal -->
+                                <argument>--main-class</argument>
+                                <argument>${app.mainClass}</argument>
+
+
+                                <!-- Ícone -->
+                                <argument>--icon</argument>
+                                <argument>${app.icon}</argument>
+
+
+                                <!-- Pasta de saída -->
+                                <argument>--dest</argument>
+                                <argument>${app.dest}</argument>
+
+
+                            </arguments>
+
+                        </configuration>
+
+                    </execution>
+
+                </executions>
+
+            </plugin>
+
+
+            <!-- ================================================== -->
+            <!-- TESTES -->
+            <!-- ================================================== -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-surefire-plugin</artifactId>
+
+                <version>3.5.2</version>
+
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+</project>
