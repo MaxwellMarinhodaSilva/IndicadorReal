@@ -2,6 +2,12 @@
 
 Aplicação desktop em Java 21 para interpretar registros de erro, localizar matrículas em arquivos JSON e corrigir automaticamente o campo `TIPOENVIO`.
 
+<div align="center">
+  <img src="assets/indicador-real.png"
+       alt="Visão geral do projeto IndicadorReal"
+       width="100%">
+</div>
+
 ## Visão geral
 
 O IndicadorReal recebe os registros de erro por arquivo TXT ou texto colado e cruza as matrículas identificadas com os registros do JSON selecionado. Ao final do processamento, preserva o arquivo original e gera novos arquivos com o resultado da correção, o relatório e o log da execução.
