@@ -425,9 +425,13 @@ public class IndicadorReal extends JFrame {
                 )
         );
 
-        JButton btnHistorico = new JButton("◷");
+        JButton btnHistorico = new JButton(IconeUtil.historico());
 
         btnHistorico.setToolTipText(
+                "Arquivos recentes"
+        );
+
+        btnHistorico.getAccessibleContext().setAccessibleName(
                 "Arquivos recentes"
         );
 
@@ -437,33 +441,24 @@ public class IndicadorReal extends JFrame {
          */
         btnHistorico.setPreferredSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
 
         btnHistorico.setMinimumSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
 
         btnHistorico.setMaximumSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
-        ;
-
-        btnHistorico.setFont(
-                btnHistorico.getFont().deriveFont(
-                        Font.PLAIN,
-                        21f
-                )
-        );
-
         btnHistorico.addActionListener(e -> {
             salvarHistoricoAtual();
             abrirDialogHistorico();
@@ -493,23 +488,27 @@ public class IndicadorReal extends JFrame {
                 "Limpar tela"
         );
 
+        btnLimparTela.getAccessibleContext().setAccessibleName(
+                "Limpar tela"
+        );
+
         btnLimparTela.setPreferredSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
 
         btnLimparTela.setMinimumSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
 
         btnLimparTela.setMaximumSize(
                 new Dimension(
-                        46,
+                        48,
                         32
                 )
         );
@@ -1177,6 +1176,21 @@ public class IndicadorReal extends JFrame {
         salvarHistoricoAtual();
     }
 
+    private void padronizarBotaoHistorico(
+            JButton botao,
+            String descricaoAcessivel
+    ) {
+
+        Dimension tamanho = new Dimension(132, 34);
+
+        botao.setPreferredSize(tamanho);
+        botao.setMinimumSize(tamanho);
+        botao.setMaximumSize(tamanho);
+        botao.setIconTextGap(7);
+        botao.setToolTipText(descricaoAcessivel);
+        botao.getAccessibleContext().setAccessibleName(descricaoAcessivel);
+    }
+
     private void abrirDialogHistorico() {
 
         List<HistoricoItem> arquivos;
@@ -1371,23 +1385,32 @@ public class IndicadorReal extends JFrame {
 
         JButton btnAbrir =
                 new JButton(
-                        "Abrir"
+                        "Abrir",
+                        IconeUtil.abrir()
                 );
 
         JButton btnRemover =
                 new JButton(
-                        "Remover"
+                        "Remover",
+                        IconeUtil.remover()
                 );
 
         JButton btnLimpar =
                 new JButton(
-                        "Limpar"
+                        "Limpar",
+                        IconeUtil.limpar()
                 );
 
         JButton btnCancelar =
                 new JButton(
-                        "Cancelar"
+                        "Cancelar",
+                        IconeUtil.cancelar()
                 );
+
+        padronizarBotaoHistorico(btnAbrir, "Abrir o arquivo recente selecionado");
+        padronizarBotaoHistorico(btnRemover, "Remover o arquivo selecionado do histórico");
+        padronizarBotaoHistorico(btnLimpar, "Limpar todos os arquivos recentes");
+        padronizarBotaoHistorico(btnCancelar, "Fechar arquivos recentes");
 
         boolean possuiHistorico =
                 !arquivos.isEmpty();

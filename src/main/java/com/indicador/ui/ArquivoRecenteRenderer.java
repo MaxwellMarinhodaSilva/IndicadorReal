@@ -4,7 +4,6 @@ import com.indicador.config.HistoricoItem;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
 
@@ -125,14 +124,24 @@ public class ArquivoRecenteRenderer
             boolean arquivoExiste =
                     arquivo.exists();
 
+            String caminhoCompleto = arquivo.getAbsolutePath();
+
             lblNome.setText(
-                    arquivo.getName()
+                    truncar(
+                            arquivo.getName(),
+                            lista,
+                            95
+                    )
             );
+
+            setToolTipText(caminhoCompleto);
+            lblNome.setToolTipText(caminhoCompleto);
+            lblCaminho.setToolTipText(caminhoCompleto);
 
             if (arquivoExiste) {
 
                 lblCaminho.setText(
-                        arquivo.getAbsolutePath()
+                        truncar(caminhoCompleto, lista, 95)
                 );
 
             } else {
@@ -144,23 +153,14 @@ public class ArquivoRecenteRenderer
 
             if (arquivoExiste) {
 
-                Icon icone =
-                        FileSystemView
-                                .getFileSystemView()
-                                .getSystemIcon(
-                                        arquivo
-                                );
-
                 lblIcone.setIcon(
-                        icone
+                        IconeUtil.arquivoJson()
                 );
 
             } else {
 
                 lblIcone.setIcon(
-                        UIManager.getIcon(
-                                "OptionPane.warningIcon"
-                        )
+                        IconeUtil.cancelar()
                 );
 
             }
@@ -217,5 +217,42 @@ public class ArquivoRecenteRenderer
         }
 
         return this;
+    }
+
+    private String truncar(
+            String texto,
+            JList<?> lista,
+            int larguraReservada
+    ) {
+
+        if (texto == null) {
+            return "";
+        }
+
+        int larguraDisponivel = Math.max(
+                100,
+                lista.getWidth() - larguraReservada
+        );
+
+        FontMetrics metricas =
+                getFontMetrics(
+                        lblNome.getFont()
+                );
+
+        if (metricas.stringWidth(texto) <= larguraDisponivel) {
+            return texto;
+        }
+
+        String sufixo = "…";
+        int limite = texto.length();
+
+        while (limite > 0
+                && metricas.stringWidth(
+                texto.substring(0, limite) + sufixo
+        ) > larguraDisponivel) {
+            limite--;
+        }
+
+        return texto.substring(0, limite) + sufixo;
     }
 }
