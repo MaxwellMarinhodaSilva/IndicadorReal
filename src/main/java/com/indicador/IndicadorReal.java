@@ -470,7 +470,7 @@ public class IndicadorReal extends JFrame {
 
         painelHistorico.add(
                 Box.createHorizontalStrut(
-                        18
+                        14
                 )
         );
 
